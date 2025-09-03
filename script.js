@@ -12,7 +12,7 @@ let score = 0;
 let pipe_seperation = 0;
 
 let animationId;
-let isTransitioning = false; // The new flag
+let isTransitioning = false;
 
 function initializeElements() {
     bird_props = bird.getBoundingClientRect();
@@ -64,7 +64,6 @@ function startGame() {
     img.src = 'images/Bird.png';
     bird.style.top = '40vh';
 
-    // ✅ Reset bird_props immediately
     bird_props = bird.getBoundingClientRect();
 
     game_state = 'Play';
@@ -99,7 +98,6 @@ function movePipes() {
         let pipe_sprite_props = element.getBoundingClientRect();
         bird_props = bird.getBoundingClientRect();
 
-        // Collision check
         if (bird_props.left < pipe_sprite_props.left + pipe_sprite_props.width && 
             bird_props.left + bird_props.width > pipe_sprite_props.left && 
             bird_props.top < pipe_sprite_props.top + pipe_sprite_props.height && 
@@ -107,7 +105,6 @@ function movePipes() {
             endGame();
             return;
         } 
-        // Score increment
         else if (pipe_sprite_props.right < bird_props.left && 
                  pipe_sprite_props.right + move_speed >= bird_props.left && 
                  element.increase_score === '1') {
@@ -116,7 +113,6 @@ function movePipes() {
             sound_point.play();
         }
         
-        // Remove pipe when off-screen
         if (pipe_sprite_props.right <= 0) {
             element.remove();
         } else {
@@ -129,10 +125,8 @@ function applyGravity() {
     bird_dy += grativy;
     bird.style.top = (bird_props.top + bird_dy) + 'px';
 
-    // ✅ Update props AFTER moving
     bird_props = bird.getBoundingClientRect();
 
-    // Collision with top or bottom
     if (bird_props.top <= 0 || bird_props.bottom >= background.bottom) {
         endGame();
         return;
@@ -144,14 +138,12 @@ function createPipes() {
         pipe_seperation = 0;
         let pipe_posi = Math.floor(Math.random() * 43) + 8;
         
-        // Upper pipe
         let pipe_sprite_inv = document.createElement('div');
         pipe_sprite_inv.className = 'pipe_sprite';
         pipe_sprite_inv.style.top = (pipe_posi - 70) + 'vh';
         pipe_sprite_inv.style.left = '100vw';
         document.body.appendChild(pipe_sprite_inv);
         
-        // Lower pipe
         let pipe_sprite = document.createElement('div');
         pipe_sprite.className = 'pipe_sprite';
         pipe_sprite.style.top = (pipe_posi + 35) + 'vh';
